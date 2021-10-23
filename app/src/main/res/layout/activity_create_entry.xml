@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/etTextField"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="@string/text_field"
+        android:gravity="center"
+        android:textColorHint="@color/colorGrey"
+        android:textSize="16dp"
+        android:padding="8dp"
+        android:lineSpacingExtra= "5dp"
+        android:textColor="@color/colorDark"
+        android:background="@drawable/frame_file"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvSave"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/tvSave"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:text="@string/save"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:background="@drawable/background_ripple_entry"
+        app:layout_constraintTop_toTopOf="@id/tvCancel"
+        app:layout_constraintBottom_toBottomOf="@id/tvCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:text="@string/cancel"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:background="@drawable/background_ripple_entry"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

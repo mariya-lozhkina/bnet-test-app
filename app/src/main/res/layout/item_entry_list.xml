@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvCreatDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/date"
+            android:textColor="@color/colorDark"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvCD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/creat_date"
+            android:textColor="@color/colorDark"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@id/tvCreatDate"
+            app:layout_constraintStart_toStartOf="@id/tvCreatDate"
+            app:layout_constraintTop_toBottomOf="@id/tvCreatDate" />
+
+        <TextView
+            android:id="@+id/tvModificationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:text="@string/date"
+            android:textColor="@color/colorDark"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCreatDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvCreatDate" />
+
+        <TextView
+            android:id="@+id/tvMD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:text="@string/modification_date"
+            android:textColor="@color/colorDark"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvModificationDate"
+            app:layout_constraintStart_toStartOf="@id/tvModificationDate"
+            app:layout_constraintTop_toBottomOf="@+id/tvModificationDate" />
+
+        <TextView
+            android:id="@+id/tvEntryText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp"
+            android:background="@drawable/frame_file"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMD"
+            android:maxLength="200" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
