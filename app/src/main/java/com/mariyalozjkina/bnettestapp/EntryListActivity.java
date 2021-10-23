@@ -48,8 +48,6 @@ public class EntryListActivity extends AppCompatActivity {
 
         rvEntrys = findViewById(R.id.rvEntrys);
         initList();
-
-        entryAdapter.notifyDataSetChanged();
         tvCreateEntry = findViewById(R.id.tvCreateEntry);
         tvCreateEntry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,10 +75,6 @@ public class EntryListActivity extends AppCompatActivity {
         rvEntrys.setLayoutManager(layoutManager);
     }
 
-    /**
-     * Здесь мы
-     * @param entry
-     */
     private void openEntry(Entry entry) {
         Intent intent = new Intent(this,EntryActivity.class);
         intent.putExtra(Constants.BODY, entry.body);
@@ -169,7 +163,6 @@ public class EntryListActivity extends AppCompatActivity {
     }
 
     private void loadEntries() {
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -186,7 +179,6 @@ public class EntryListActivity extends AppCompatActivity {
             }
         }).start();
     }
-
 
     private String requestGetEntries() {
         String url = Constants.URL;

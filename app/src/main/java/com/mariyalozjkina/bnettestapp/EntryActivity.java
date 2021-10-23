@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EntryActivity extends AppCompatActivity {
@@ -24,7 +26,8 @@ public class EntryActivity extends AppCompatActivity {
         long da = intent.getLongExtra(Constants.DA, 0);
         long dm = intent.getLongExtra(Constants.DM, 0);
         tvEntryText.setText(text);
-        tvCreatDate.setText(String.valueOf(da));
-        tvModificationDate.setText(String.valueOf(dm));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+        tvCreatDate.setText(dateFormat.format(da * 1000));
+        tvModificationDate.setText(dateFormat.format(dm * 1000));
     }
 }
