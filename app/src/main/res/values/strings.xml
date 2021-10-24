@@ -7,4 +7,7 @@
     <string name="cancel">Отменить</string>
     <string name="creat_entry">Создать новую заявку</string>
     <string name="text_field">Введите текст</string>
+    <string name="error">Ошибка!</string>
+    <string name="check_connection">Проверьте соединение с сетью</string>
+    <string name="update_data">Обновить данные</string>
 </resources>

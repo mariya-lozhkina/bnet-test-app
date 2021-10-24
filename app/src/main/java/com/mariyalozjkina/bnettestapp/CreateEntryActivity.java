@@ -1,5 +1,6 @@
 package com.mariyalozjkina.bnettestapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateEntryActivity extends AppCompatActivity {
@@ -26,7 +28,6 @@ public class CreateEntryActivity extends AppCompatActivity {
     private EditText etTextField;
     private TextView tvSave;
     private TextView tvCancel;
-
     private Handler handler = new Handler();
 
     @Override
@@ -37,7 +38,6 @@ public class CreateEntryActivity extends AppCompatActivity {
         etTextField = findViewById(R.id.etTextField);
         tvSave = findViewById(R.id.tvSave);
         tvCancel = findViewById(R.id.tvCancel);
-
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,19 +60,38 @@ public class CreateEntryActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String requestAddEntryJson = requestAddEntry(session, body);
-                final AddEntryResponse response = new Gson().fromJson(requestAddEntryJson, AddEntryResponse.class);
+                final String requestAddEntryJson = requestAddEntry(session, body);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (requestAddEntryJson == null) {
+                            showAddEntryAlert();
+                            return;
+                        }
+                        final AddEntryResponse response = new Gson().fromJson(requestAddEntryJson, AddEntryResponse.class);
                         if (response.status == 1) {
                             setResult(RESULT_OK);
                             finish();
+                        } else {
+                            showAddEntryAlert();
                         }
                     }
                 });
             }
         }).start();
+    }
+
+    private void showAddEntryAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error);
+        builder.setMessage(R.string.check_connection);
+        builder.setPositiveButton(R.string.update_data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addEntry();
+            }
+        });
+        builder.show();
     }
 
     private String requestAddEntry(String session, String body) {
@@ -82,7 +101,6 @@ public class CreateEntryActivity extends AppCompatActivity {
         params.put("a", "add_entry");
         params.put("session", session);
         params.put("body", body);
-
         HttpURLConnection c = null;
         try {
             URL u = new URL(url);
@@ -103,7 +121,6 @@ public class CreateEntryActivity extends AppCompatActivity {
             c.setReadTimeout(timeout);
             c.connect();
             int status = c.getResponseCode();
-
             switch (status) {
                 case 200:
                 case 201:
@@ -118,7 +135,6 @@ public class CreateEntryActivity extends AppCompatActivity {
                     System.out.println(result);
                     return result;
             }
-
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {

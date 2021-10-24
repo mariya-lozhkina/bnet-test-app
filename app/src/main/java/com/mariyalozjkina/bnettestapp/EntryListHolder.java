@@ -35,6 +35,5 @@ public class EntryListHolder extends RecyclerView.ViewHolder {
                 selectEntryListener.selectEntry(entry);
             }
         });
-
     }
 }

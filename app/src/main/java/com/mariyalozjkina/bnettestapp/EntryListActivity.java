@@ -1,5 +1,6 @@
 package com.mariyalozjkina.bnettestapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +47,6 @@ public class EntryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_list);
         startNewSession();
-
         rvEntrys = findViewById(R.id.rvEntrys);
         initList();
         tvCreateEntry = findViewById(R.id.tvCreateEntry);
@@ -91,17 +92,38 @@ public class EntryListActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String newSessionJson = getNewSession();
-                NewSessionResponse response = new Gson().fromJson(newSessionJson, NewSessionResponse.class);
-                final String session = response.data.session;
+                final String newSessionJson = getNewSession();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setSession(session);
+                        if (newSessionJson == null) {
+                            showSessionAlert();
+                            return;
+                        }
+                        NewSessionResponse response = new Gson().fromJson(newSessionJson, NewSessionResponse.class);
+                        if (response.status == 0) {
+                            showSessionAlert();
+                        } else {
+                            final String session = response.data.session;
+                            setSession(session);
+                        }
                     }
                 });
             }
         }).start();
+    }
+
+    private void showSessionAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error);
+        builder.setMessage(R.string.check_connection);
+        builder.setPositiveButton(R.string.update_data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startNewSession();
+            }
+        });
+        builder.show();
     }
 
     private String getNewSession() {
@@ -109,7 +131,6 @@ public class EntryListActivity extends AppCompatActivity {
         int timeout = 5000;
         Map<String, String> params = new HashMap<>();
         params.put("a", "new_session");
-
         HttpURLConnection c = null;
         try {
             URL u = new URL(url);
@@ -130,7 +151,6 @@ public class EntryListActivity extends AppCompatActivity {
             c.setReadTimeout(timeout);
             c.connect();
             int status = c.getResponseCode();
-
             switch (status) {
                 case 200:
                 case 201:
@@ -145,7 +165,6 @@ public class EntryListActivity extends AppCompatActivity {
                     System.out.println(result);
                     return result;
             }
-
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
@@ -166,18 +185,39 @@ public class EntryListActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String getEntriesJson = requestGetEntries();
-                GetEntriesResponse response = new Gson().fromJson(getEntriesJson, GetEntriesResponse.class);
-                final ArrayList<Entry> entries = response.data.get(0);
+                final String getEntriesJson = requestGetEntries();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        entryAdapter.setItems(entries);
-                        entryAdapter.notifyDataSetChanged();
+                        if (getEntriesJson == null){
+                            showGetEntriesAlert();
+                            return;
+                        }
+                        GetEntriesResponse response = new Gson().fromJson(getEntriesJson, GetEntriesResponse.class);
+                        if (response.status ==0) {
+                            showGetEntriesAlert();
+                        } else {
+                            final ArrayList<Entry> entries = response.data.get(0);
+                            entryAdapter.setItems(entries);
+                            entryAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
             }
         }).start();
+    }
+
+    private void showGetEntriesAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error);
+        builder.setMessage(R.string.check_connection);
+        builder.setPositiveButton(R.string.update_data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                loadEntries();
+            }
+        });
+        builder.show();
     }
 
     private String requestGetEntries() {
@@ -186,7 +226,6 @@ public class EntryListActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<>();
         params.put("a", "get_entries");
         params.put("session", session);
-
         HttpURLConnection c = null;
         try {
             URL u = new URL(url);
@@ -207,7 +246,6 @@ public class EntryListActivity extends AppCompatActivity {
             c.setReadTimeout(timeout);
             c.connect();
             int status = c.getResponseCode();
-
             switch (status) {
                 case 200:
                 case 201:
@@ -222,7 +260,6 @@ public class EntryListActivity extends AppCompatActivity {
                     System.out.println(result);
                     return result;
             }
-
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
@@ -238,5 +275,4 @@ public class EntryListActivity extends AppCompatActivity {
         }
         return null;
     }
-
 }
